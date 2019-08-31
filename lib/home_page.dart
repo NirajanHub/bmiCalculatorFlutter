@@ -5,8 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'boxItems.dart';
 
-const activeColor = Colors.blue;
-const inactiveColor = Colors.purple;
+import 'constatnts.dart';
 
 const bottomAppColor = Colors.pink;
 
@@ -19,28 +18,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Color maleCardColor = inactiveColor;
-  Color femaleCardColor = inactiveColor;
-
-  void updateCardColor(Gender clickedGender) {
-    if (clickedGender == Gender.male) {
-      if (maleCardColor == inactiveColor) {
-        maleCardColor = activeColor;
-        femaleCardColor = inactiveColor;
-      } else {
-        femaleCardColor = activeColor;
-        maleCardColor = inactiveColor;
-      }
-    } else {
-      if (femaleCardColor == inactiveColor) {
-        femaleCardColor = activeColor;
-        maleCardColor = inactiveColor;
-      } else {
-        maleCardColor = activeColor;
-        femaleCardColor = inactiveColor;
-      }
-    }
-  }
+  int height = 180;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GestureDetector(
                   onTap: () {
                     setState(() {
-                     maleCardColor==inactiveColor?maleCardColor=activeColor:femaleCardColor=inactiveColor;
-                     maleCardColor==activeColor?femaleCardColor=inactiveColor:maleCardColor=activeColor;
-
+                      maleCardColor == kInactiveColor
+                          ? maleCardColor = kActiveColor
+                          : femaleCardColor = kInactiveColor;
+                      maleCardColor == kActiveColor
+                          ? femaleCardColor = kInactiveColor
+                          : maleCardColor = kActiveColor;
                     });
                   },
                   child: ReusableCard(
@@ -70,9 +51,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GestureDetector(
                 onTap: () {
                   setState(() {
-                    femaleCardColor==inactiveColor?femaleCardColor=activeColor:maleCardColor=inactiveColor;
-                    femaleCardColor==activeColor?maleCardColor=inactiveColor:femaleCardColor=activeColor;
-                 });
+                    femaleCardColor == kInactiveColor
+                        ? femaleCardColor = kActiveColor
+                        : maleCardColor = kInactiveColor;
+                    femaleCardColor == kActiveColor
+                        ? maleCardColor = kInactiveColor
+                        : femaleCardColor = kActiveColor;
+                  });
                 },
                 child: ReusableCard(
                     color: femaleCardColor,
@@ -81,11 +66,43 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         )),
+        //scroll bar
         Expanded(
-          child: ReusableCard(
-            color: Colors.pink,
-          ),
-        ),
+            child: ReusableCard(
+          color: Colors.pink,
+          cardChild: Column(children: <Widget>[
+            Container(
+              child: Text("HEIGHT", style: kLabelTextType),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              mainAxisAlignment: MainAxisAlignment.center,
+              textBaseline: TextBaseline.alphabetic,
+              children: <Widget>[
+                Text(height.toString(), style: TextStyle(fontSize: 80.0)),
+                Text("cm", style: kLabelTextType)
+              ],
+            ),
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                  inactiveTrackColor: Colors.black12,
+                  activeTrackColor: Colors.white,
+                  thumbColor: Colors.blue,
+                  overlayColor: Colors.black,
+                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                  overlayShape: RoundSliderOverlayShape(overlayRadius: 30.0)),
+              child: Slider(
+                  value: height.toDouble(),
+                  max: 220.0,
+                  min: 120.0,
+                  onChanged: (double newValue) {
+                    setState(() {
+                      height = newValue.round();
+                    });
+                  }),
+            )
+          ]),
+        )),
         Expanded(
             child: Row(
           children: <Widget>[
@@ -101,5 +118,29 @@ class _MyHomePageState extends State<MyHomePage> {
       ])),
     );
   }
+
+  Color maleCardColor = kInactiveColor;
+  Color femaleCardColor = kInactiveColor;
+
+  void updateCardColor(int gender) {
+    if (gender == 1) {
+      if (maleCardColor == kInactiveColor) {
+        maleCardColor = kActiveColor;
+        femaleCardColor = kInactiveColor;
+      } else {
+        femaleCardColor = kActiveColor;
+        maleCardColor = kInactiveColor;
+      }
+    } else {
+      if (femaleCardColor == kInactiveColor) {
+        femaleCardColor = kActiveColor;
+        maleCardColor = kInactiveColor;
+      } else {
+        maleCardColor = kActiveColor;
+        femaleCardColor = kInactiveColor;
+      }
+    }
+  }
 }
-enum Gender {male,female}
+
+enum Gender { male, female }
