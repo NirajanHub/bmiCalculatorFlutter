@@ -9,10 +9,13 @@ class BoxItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(fontIcons),
+        Icon(fontIcons, size: 80.0),
         SizedBox(height: 20.0),
-        Text(bottomText)
+        Text(bottomText,textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 20.0),)
       ],
     );
   }

@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'boxItems.dart';
 
 const activeColor = Colors.blue;
-const inactiveColor = Colors.black54;
+const inactiveColor = Colors.purple;
 
 const bottomAppColor = Colors.pink;
 
@@ -19,6 +19,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Color maleCardColor = inactiveColor;
+  Color femaleCardColor = inactiveColor;
+
+  void updateCardColor(Gender clickedGender) {
+    if (clickedGender == Gender.male) {
+      if (maleCardColor == inactiveColor) {
+        maleCardColor = activeColor;
+        femaleCardColor = inactiveColor;
+      } else {
+        femaleCardColor = activeColor;
+        maleCardColor = inactiveColor;
+      }
+    } else {
+      if (femaleCardColor == inactiveColor) {
+        femaleCardColor = activeColor;
+        maleCardColor = inactiveColor;
+      } else {
+        maleCardColor = activeColor;
+        femaleCardColor = inactiveColor;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,29 +54,36 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
           children: <Widget>[
             Expanded(
-                child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  updateCardColor(1);
-                });
-              },
               child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      updateCardColor(1);
+                     maleCardColor==inactiveColor?maleCardColor=activeColor:femaleCardColor=inactiveColor;
+                     maleCardColor==activeColor?femaleCardColor=inactiveColor:maleCardColor=activeColor;
+
                     });
                   },
-                  child: ReusableCard(color: Colors.pink)),
-            )),
+                  child: ReusableCard(
+                      color: maleCardColor,
+                      cardChild: BoxItems(FontAwesomeIcons.mars, "Male"))),
+            ),
             Expanded(
-              child: ReusableCard(color: Colors.pink),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    femaleCardColor==inactiveColor?femaleCardColor=activeColor:maleCardColor=inactiveColor;
+                    femaleCardColor==activeColor?maleCardColor=inactiveColor:femaleCardColor=activeColor;
+                 });
+                },
+                child: ReusableCard(
+                    color: femaleCardColor,
+                    cardChild: BoxItems(FontAwesomeIcons.venus, "Female")),
+              ),
             )
           ],
         )),
         Expanded(
           child: ReusableCard(
             color: Colors.pink,
-            cardChild: BoxItems(FontAwesomeIcons.mars, "Male"),
           ),
         ),
         Expanded(
@@ -61,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Expanded(
                 child: ReusableCard(
-              cardChild: BoxItems(FontAwesomeIcons.venus, "Female"),
               color: Colors.pink,
             )),
             Expanded(
@@ -72,19 +101,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ])),
     );
   }
-
-  Color maleCardColor = inactiveColor;
-  Color femaleCardColor = inactiveColor;
-
-  void updateCardColor(int gender) {
-    if (gender == 1) {
-      if (maleCardColor == inactiveColor) {
-        maleCardColor = activeColor;
-        femaleCardColor = inactiveColor;
-      } else {
-        femaleCardColor = activeColor;
-        maleCardColor = inactiveColor;
-      }
-    }
-  }
 }
+enum Gender {male,female}
